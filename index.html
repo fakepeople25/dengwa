@@ -1,71 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"/>
-    <title>Document</title>
+    <title>Editor Kode Online - HTML, CSS, JS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <section id="home">
-        <div class="container">
-        <!-- bagian bar start-->
-        <div class="navwrapper">
-            <ul class="navigation">
-                <li class="nav">
-                    <a href="#home" class="navlink">HOME</a>
-                </li>
-                <li class="nav">
-                    <a href="#about" class="navlink">ABOUT</a>
-                </li>
-                <li class="nav">
-                    <a href="#contact" class="navlink">CONTACT</a>
-                </li>
-            </ul>
+    <div class="container">
+        <h1>Editor Kode Online - HTML, CSS, JS</h1>
+        <div class="editor">
+            <div class="section">
+                <h3>HTML</h3>
+                <textarea id="htmlInput" placeholder="Ketik kode HTML Anda di sini..."><!DOCTYPE html>
+<html>
+<head>
+    <title>Halaman Saya</title>
+</head>
+<body>
+    <h1>Halo Dunia!</h1>
+    <p>Ini adalah contoh HTML.</p>
+</body>
+</html></textarea>
+            </div>
+            <div class="section">
+                <h3>CSS</h3>
+                <textarea id="cssInput" placeholder="Ketik kode CSS Anda di sini...">body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+h1 {
+    color: blue;
+}</textarea>
+            </div>
+            <div class="section">
+                <h3>JavaScript</h3>
+                <textarea id="jsInput" placeholder="Ketik kode JavaScript Anda di sini...">console.log('Halo dari JS!');
+alert('Ini adalah alert dari JS!');</textarea>
+            </div>
         </div>
-        <div class="contentwrapper">
-            <h1>welcome</h1>
-    </section>
-    <section id="about">
-        <div class="container awal">
-            <div class="contentwrapper">
-                <h1>
-                    Sosial Media :
-                <li class="nav">
-                    <a href="https://www.instagram.com/mfikrifzn._/" class="navlink"> 👉INSTAGRAM👈</a></li>
-                <li class="nav">    
-                    <a href="https://www.facebook.com/profile.php?id=61551902408570&locale=id_ID" class="navlink"> 👉FACEBOOK👈</a>
-                </li>
-                </h1>
-            </div>
-            </div>
-            <section id="contact">
-                <div class="container akhir">
-                    <div class="contentwrapper">
-                        <form>
-                        <h1>Kirim Pesan</h1>
-                        <label for="nama" class="form-label">Nama</label>
-                        <br>
-                        <input id="nama" class="form-control" placeholder="Nama anda">
-                        <br>
-                        <label for="email" class="form-label">Email</label>
-                        <br>
-                        <input id="email" class="form-control" placeholder="Email anda">
-                        <br>
-                        <label for="pesan" class="form-label"> isi pesan</label>
-                        <br>
-                        <textarea  name="pesan" class="form-control" id="pesan"></textarea>
-                        <br>
-                        <button class="btn btn-primary form-control" ><a href="https://fakepeople25.github.io/dengwa/index.html">Kirim</a></button>
-                        </form>
-                    </div>
-                </div>
-    </section>
-    <div class="top" onclick="goToTop()">☝</div>
+        <div class="buttons">
+            <button onclick="runCode()">Jalankan Kode</button>
+            <button id="downloadBtn" onclick="downloadCode()">Download HTML</button>
+        </div>
+        <iframe id="preview" title="Preview"></iframe>
+    </div>
     <script>
-        const goToTop = () => {
-            return location.href="#home"
+        function runCode() {
+            const html = document.getElementById('htmlInput').value;
+            const css = document.getElementById('cssInput').value;
+            const js = document.getElementById('jsInput').value;
+            const preview = document.getElementById('preview');
+            
+            // Gabungkan HTML, CSS, dan JS untuk preview
+            const fullHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>${css}</style>
+                </head>
+                <body>
+                    ${html}
+                    <script>${js}<\/script>
+                </body>
+                </html>
+            `;
+            
+            // Set srcdoc untuk iframe (aman dan tidak memuat file eksternal)
+            preview.srcdoc = fullHtml;
         }
+        
+        function downloadCode() {
+            const html = document.getElementById('htmlInput').value;
+            const css = document.getElementById('cssInput').value;
+            const js = document.getElementById('jsInput').value;
+            
+            // Gabungkan menjadi file HTML lengkap
+            const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+    <style>${css}</style>
+</head>
+<body>
+    ${html}
+    <script>${js}<\/script>
+</body>
+</html>`;
+            
+            // Buat blob dan download
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'hasil_kode.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Jalankan preview otomatis saat load
+        window.onload = runCode;
     </script>
 </body>
 </html>
